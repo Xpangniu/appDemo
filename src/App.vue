@@ -126,7 +126,46 @@
       ]),
       ...mapState({
         dataUrl (state) {
-          return 'http://ws.stream.qqmusic.qq.com/C100' + state.PlayService.song.mid + '.m4a?fromtag=0&guid=126548448'
+          var url = 'https://c.y.qq.com/base/fcgi-bin/fcg_music_express_mobile3.fcg';
+          var vkey;
+          var songmid = state.PlayService.song.mid;
+          return this.$http.jsonp(
+            url,
+            {
+              params: {
+                g_tk:'195219765',
+                jsonpCallback:'MusicJsonCallback004680169373158849',
+                loginUin:'1297716249',
+                hostUin:0,
+                format:'json',
+                inCharset:'utf8',
+                outCharset:'utf-8',
+                notice:0,
+                platform:'yqq',
+                needNewCode:0,
+                cid:'205361747',
+                callback:'MusicJsonCallback004680169373158849',
+                uin:'1297716249',
+                songmid: songmid,
+                filename:'C400' + songmid + '.m4a',
+                guid:'4402796566'
+              },
+              jsonp: 'callback'
+            }
+          )
+          .then((res) => {   //成功的回调
+            vkey = res.data.items[0].vkey;
+            this.dataUrl = 'http://isure.stream.qqmusic.qq.com/C400'
+            + state.PlayService.song.mid
+            + '.m4a?fromtag=66&guid=4402796566&uin=0&vkey='
+            + vkey;
+            resolve(res);
+          })
+          .catch((res) => {  //失败的回调
+            
+          });
+          // return 'http://isure.stream.qqmusic.qq.com/C400' + state.PlayService.song.mid + '.m4a?fromtag=66&guid=4402796566'
+          // + '&uin=0&vkey=EE4E3CBE5E78D161D67EBFCEA721DA9DEA6C214567744616E8EF2106A7D0BFD7DF3A8A8C67BD00D5F75369B1344A093CAC7BE67389BD2AD2'
         },
         playing: state => state.PlayService.playing,
         song: state => state.PlayService.song
