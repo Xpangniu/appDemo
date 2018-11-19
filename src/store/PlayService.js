@@ -13,6 +13,7 @@ export default {
     song: {
       name: def.DEFAULT_SONG_NAME
     },
+    playUrl: '',
     playList: []
   },
   mutations: {
@@ -90,6 +91,9 @@ export default {
     },
     setAlbummid(state,albummid){
       state.song = {...state.song,albummid}
+    },
+    setPlayUlr(state,url){
+      state.playUrl = url
     }
   },
   getters: {
