@@ -4,6 +4,7 @@
 import Vue from 'vue'
 
 import API from '../config/api'
+const axios = require('axios')
 
 function apiFactory(api) {
   return (id = null) => Vue.http.jsonp(
@@ -39,7 +40,14 @@ export default {
       return apiFactory(API.first_page_data)()
     },
     getCdList({},id){
-      return apiFactory(API.cd)(id)
+      const url = '/api/getCDList'
+      const data = API.cd.params(id)
+      return axios.get(url, {
+        params: data
+      }).then((res) => {
+        return Promise.resolve(res.data)
+      })
+      // return apiFactory(API.cd)(id)
     },
     getLyric({},id){
       return Vue.http.jsonp('https://api.darlin.me/music/lyric/'+id+'/',{

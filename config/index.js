@@ -21,7 +21,19 @@ module.exports = {
     port: 8080,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api/getCDList': {
+        target: 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg',
+        bypass: function(req,res,proxyOptions){
+          req.headers.referer = 'https://c.y.qq.com/';
+          req.headers.host = 'c.y.qq.com';
+        },
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api/getCDList': ''
+        }
+      }
+    },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)
