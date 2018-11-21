@@ -160,8 +160,16 @@
       }
     },
     created: function () {
-      this.$store.dispatch('getCdList', this.$route.params.id).then((response) => {
-        this.cd = response.data.cdlist[0]
+        this.$store.dispatch('getCdList', this.$route.params.id).then((response) => {
+          debugger
+            console.log('--response--')
+            console.log(response)
+            console.log(JSON.stringify(response))
+            console.log(response.data)
+            let num1 = response.indexOf('(')
+            let num2 = response.lastIndexOf(')')
+            let resultData = JSON.parse(response.substring(num1 + 1, num2))
+            this.cd = resultData.cdlist[0]
       })
 
       let that = this
